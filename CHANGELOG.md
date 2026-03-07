@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.8.0] — 2026-03-07
+
+**Commit**: `feat: dashboard metrics and word count visualization`
+
+### Added
+- `MetricCard` component for reusable stat display
+- `StatusBadge` component for backend health indicator
+- `WordCountChart` horizontal bar chart (Recharts) showing top 15 agencies
+- Dashboard wired to live API data with parallel fetching
+- 4 metric cards: agencies count, change records, top word count, API status
+
+### Technical Notes
+- `Promise.all` for parallel data loading on mount
+- Recharts `ResponsiveContainer` for fluid chart sizing
+- Word counts formatted as millions (e.g. "59.5M") for readability
+- Short names used in chart labels to prevent overflow
+
+---
+
 ## [1.7.0] — 2026-03-07
 
 **Commit**: `feat: frontend scaffold with React, Tailwind, and routing`
