@@ -12,6 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHttpClient<EcfrClient>(client =>
     client.Timeout = TimeSpan.FromSeconds(60));
 
+// Services
+builder.Services.AddScoped<SyncService>();
+
 // CORS
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
@@ -47,6 +50,19 @@ app.MapGet("/api/health", async (AppDbContext db) =>
         lastSync = lastSync?.ToString("o"),
         agencyCount,
         changeCount
+    });
+});
+
+// Manual sync — fetches agencies + titles from eCFR and upserts into DB
+app.MapPost("/api/sync/trigger", async (SyncService sync) =>
+{
+    var log = await sync.RunMetadataSyncAsync();
+    return Results.Ok(new
+    {
+        status = log.Status,
+        agencies = log.AgenciesSynced,
+        completedAt = log.CompletedAt?.ToString("o"),
+        error = log.ErrorMessage
     });
 });
 

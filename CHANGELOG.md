@@ -5,6 +5,43 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.3.0] — 2026-03-06
+
+**Commit**: `feat: sync agencies and titles from eCFR`
+
+### Added
+- `SyncService` for data sync orchestration with `RunMetadataSyncAsync()` pipeline
+- `SyncAgenciesAsync()` — fetches agencies from eCFR, flattens parent/child hierarchy, upserts into DB
+- `SyncTitlesAsync()` — fetches all 50 CFR titles, upserts metadata
+- `POST /api/sync/trigger` endpoint for manual sync with status response
+- SyncLog entry written on each run with status tracking
+
+### Technical Notes
+- Upsert pattern: load existing records into dictionary, update or insert per DTO
+- Agency hierarchy flattened recursively — children stored as top-level with their own CFR references
+- CFR references serialized as JSON array in `CfrTitlesJson` column
+- Error resilience: sync phases wrapped in try/catch, partial progress saved to SyncLog
+
+---
+
+## [1.2.0] — 2026-03-06
+
+**Commit**: `feat: eCFR API client service`
+
+### Added
+- `EcfrClient` service for all eCFR API communication
+- DTO records for API response deserialization (`AgenciesResponse`, `TitlesResponse`, `VersionsResponse`)
+- Methods: `FetchAgenciesAsync()`, `FetchTitlesAsync()`, `FetchVersionsAsync()`, `FetchContentAsync()`
+- Registered via `IHttpClientFactory` with 60-second timeout
+
+### Technical Notes
+- 100ms delay between sequential requests to avoid hammering eCFR public API
+- Graceful error handling — returns null/empty on failure, caller decides recovery
+- XML content fetched as raw `byte[]` for downstream parsing
+- `System.Text.Json` with `JsonPropertyName` attributes for snake_case mapping
+
+---
+
 ## [1.1.0] — 2026-03-06
 
 **Commit**: `feat: health endpoint, EF Core database, and CORS`
@@ -20,7 +57,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ### Technical Notes
 - DbContext registered as scoped service (one per request)
-- No lazy loading — explicit queries only
+- No lazy loading explicit queries only
 - Health endpoint uses async EF Core queries
 
 ---
