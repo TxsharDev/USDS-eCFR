@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.9.0] — 2026-03-07
+
+**Commit**: `feat: regulatory burden index chart and checksums table`
+
+### Added
+- `BurdenChart` color-coded horizontal bar chart with custom tooltip showing score breakdown
+- `ChecksumTable` with copy-to-clipboard per row for easy hash comparison
+- Dashboard now shows all 4 required metrics: word count, changes over time, checksums, RBI
+- Charts displayed side by side on desktop, stacked on mobile
+- "Highest RBI" metric card replaces "API Status" card
+
+### Technical Notes
+- RBI bars colored by intensity: green (<500), yellow (<1000), orange (<2000), red (2000+)
+- Custom Recharts tooltip shows words, complexity, and RBI score together
+- Clipboard API for one-click checksum copying with visual feedback
+- Scrollable table with sticky header for large agency lists
+
+---
+
 ## [1.8.0] — 2026-03-07
 
 **Commit**: `feat: dashboard metrics and word count visualization`
