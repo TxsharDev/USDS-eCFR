@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using EcfrAnalyzer.Data;
+using EcfrAnalyzer.Endpoints;
 using EcfrAnalyzer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +58,7 @@ app.MapGet("/api/health", async (AppDbContext db) =>
 app.MapPost("/api/sync/trigger", async (SyncService sync) =>
 {
     var log = await sync.RunFullSyncAsync();
+    AnalyticsEndpoints.ClearCache();
     return Results.Ok(new
     {
         status = log.Status,
@@ -65,5 +67,9 @@ app.MapPost("/api/sync/trigger", async (SyncService sync) =>
         error = log.ErrorMessage
     });
 });
+
+// Endpoint groups
+app.MapGroup("/api/agencies").MapAgencyEndpoints();
+app.MapGroup("/api/analytics").MapAnalyticsEndpoints();
 
 app.Run();

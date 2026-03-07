@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.5.0] — 2026-03-07
+
+**Commit**: `feat: analytics REST endpoints`
+
+### Added
+- `AgencyEndpoints` with MapGroup `/api/agencies`
+  - `GET /` list all agencies, sortable by words/rbi/name with optional limit
+  - `GET /{slug}` agency detail with monthly change breakdown
+- `AnalyticsEndpoints` with MapGroup `/api/analytics`
+  - `GET /word-counts` top N agencies by word count
+  - `GET /burden-index` top N agencies by RBI score
+  - `GET /heatmap` agency x month change grid (top 15, cached)
+  - `GET /checksums` all agency MD5 checksums
+- Server-side heatmap cache with 5-min TTL, cleared on sync
+
+### Technical Notes
+- Extension methods on RouteGroupBuilder keep Program.cs clean
+- Heatmap query aggregates 155K+ change records, cache avoids repeated expensive queries
+- String comparison on ChangeDate column works because dates are stored as YYYY-MM-DD
+- Cache invalidation wired to sync trigger endpoint
+
+---
+
 ## [1.4.0] — 2026-03-06
 
 **Commit**: `feat: version history sync and RBI computation`
