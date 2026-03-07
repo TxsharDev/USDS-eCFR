@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.1.0] — 2026-03-06
+
+**Commit**: `feat: health endpoint, EF Core database, and CORS`
+
+### Added
+- EF Core 9 with SQLite provider (`Microsoft.EntityFrameworkCore.Sqlite 9.0.3`)
+- 4 entity models: `Agency`, `Change`, `Title`, `SyncLog`
+- `AppDbContext` with `OnModelCreating` — composite index on `Changes(AgencySlug, ChangeDate)`
+- `GET /api/health` endpoint returning status, sync info, and record counts
+- CORS middleware (`AllowAnyOrigin/Method/Header` for development)
+- SQLite WAL mode enabled on startup for concurrent read performance
+- Automatic database creation via `EnsureCreated()`
+
+### Technical Notes
+- DbContext registered as scoped service (one per request)
+- No lazy loading — explicit queries only
+- Health endpoint uses async EF Core queries
+
+---
+
 ## [1.0.0] — 2026-03-06
 
 **Commit**: `chore: initial project structure and gitignore`
