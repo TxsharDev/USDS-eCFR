@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [2.1.0] — 2026-03-07
+
+**Commit**: `docs: README and screenshots`
+
+### Added
+- `README.md` with setup instructions, API reference, RBI formula explanation, and project structure
+- UI screenshots covering dashboard, charts, heatmap, checksums, and agency detail
+
+---
+
 ## [2.0.0] — 2026-03-07
 
 **Commit**: `feat: change activity heatmap, agency detail, and UX polish`
