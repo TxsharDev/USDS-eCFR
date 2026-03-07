@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.4.0] — 2026-03-06
+
+**Commit**: `feat: version history sync and RBI computation`
+
+### Added
+- `SyncVersionsAsync()` fetches version history per title, maps changes to agencies via CFR references
+- `SyncContentAsync()` fetches chapter XML, parses with `XDocument`, computes word count, sentence length, MD5 checksum
+- Regulatory Burden Index (RBI) formula: `(words/1000) * (avgSL/15) * log2(staleness+1) / 100`
+- Full sync pipeline: agencies -> titles -> versions -> content
+- Duplicate change detection using composite key (slug + date + title)
+
+### Technical Notes
+- Version-to-agency mapping built from stored CFR references JSON
+- XML text extraction pulls all text nodes from XDocument for word/sentence counting
+- Staleness calculated from `latest_amended_on` date across referenced titles
+- Batch saves every 25 agencies and every title to keep memory usage reasonable
+- Individual fetch failures logged and skipped, don't abort the whole sync
+
+---
+
 ## [1.3.0] — 2026-03-06
 
 **Commit**: `feat: sync agencies and titles from eCFR`

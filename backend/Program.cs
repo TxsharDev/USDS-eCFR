@@ -53,10 +53,10 @@ app.MapGet("/api/health", async (AppDbContext db) =>
     });
 });
 
-// Manual sync — fetches agencies + titles from eCFR and upserts into DB
+// Manual sync trigger. Runs full pipeline: agencies, titles, versions, content + RBI
 app.MapPost("/api/sync/trigger", async (SyncService sync) =>
 {
-    var log = await sync.RunMetadataSyncAsync();
+    var log = await sync.RunFullSyncAsync();
     return Results.Ok(new
     {
         status = log.Status,
