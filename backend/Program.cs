@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using EcfrAnalyzer.Data;
+using EcfrAnalyzer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=ecfr.db"));
+
+// HTTP client for eCFR API
+builder.Services.AddHttpClient<EcfrClient>(client =>
+    client.Timeout = TimeSpan.FromSeconds(60));
 
 // CORS
 builder.Services.AddCors(options =>
@@ -14,8 +19,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Ensure database created and WAL (Write-Ahead Logging) mode enabled to let thes
-// frontend query analytics data without blocking the background sync that's writing new records.
+// Ensure database created and WAL (Write-Ahead Logging) mode enabled to let the
+// frontend query analytics data without blocking the background sync writing new records.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
