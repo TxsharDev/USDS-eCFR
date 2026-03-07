@@ -5,6 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.6.0] — 2026-03-07
+
+**Commit**: `feat: background sync service with auto-refresh`
+
+### Added
+- `BackgroundSyncService` extends `BackgroundService` for automatic data sync
+- Runs full sync on startup (after 5s delay), repeats every 24 hours
+- Heatmap cache cleared after each sync so fresh data is served
+- Registered as hosted service via `AddHostedService`
+
+### Technical Notes
+- Uses `IServiceScopeFactory` to create scoped services (SyncService, DbContext) from singleton context
+- CancellationToken respected for clean shutdown
+- Errors caught and logged per cycle, won't crash the app
+
+---
+
 ## [1.5.0] — 2026-03-07
 
 **Commit**: `feat: analytics REST endpoints`

@@ -15,6 +15,7 @@ builder.Services.AddHttpClient<EcfrClient>(client =>
 
 // Services
 builder.Services.AddScoped<SyncService>();
+builder.Services.AddHostedService<BackgroundSyncService>();
 
 // CORS
 builder.Services.AddCors(options =>
