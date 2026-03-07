@@ -20,4 +20,5 @@ export const api = {
   burdenIndex: (limit) => get(`/analytics/burden-index?limit=${limit || 15}`),
   heatmap: (months) => get(`/analytics/heatmap?months=${months || 12}`),
   checksums: () => get('/analytics/checksums'),
+  triggerSync: () => fetch(`${BASE}/sync/trigger`, { method: 'POST' }).then(r => r.json()),
 };

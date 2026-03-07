@@ -5,6 +5,31 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [2.0.0] — 2026-03-07
+
+**Commit**: `feat: change activity heatmap, agency detail, and UX polish`
+
+### Added
+- `Heatmap` component showing top 15 agencies x 12 months, GitHub-style green color scale
+- `ChangeTimeline` line chart for per-agency change volume over time
+- `AgencyDetail` page with metrics cards, change timeline, and checksum display
+- Heatmap rows are clickable, navigating to agency detail page
+- Color legend for heatmap intensity scale
+- Sync Now button on dashboard with background status feedback banner
+- USDS favicon and "eCFR Regulatory Analyzer" page title
+- Word count metric card shows exact value on hover
+- `triggerSync` method in API client wired to `POST /api/sync/trigger`
+
+### Technical Notes
+- Quantile-based color buckets (4 levels) prevent outliers from washing out the scale
+- Month headers formatted from YYYY-MM to short labels (e.g. "Mar")
+- Agency detail fetches single-agency endpoint with monthly change breakdown
+- Error and loading states handled on detail page
+- Sync feedback uses timed auto-dismiss messages (8s success, 5s error)
+- Native HTML title attribute for hover tooltip on abbreviated values
+
+---
+
 ## [1.9.0] — 2026-03-07
 
 **Commit**: `feat: regulatory burden index chart and checksums table`

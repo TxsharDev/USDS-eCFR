@@ -10,7 +10,7 @@ export default function ChecksumTable({ data }) {
     // Simple "Copied!" feedback then reset after 1.5s
     const handleCopy = (checksum, slug) => {
         navigator.clipboard.writeText(checksum)
-        setCopied(slug)s
+        setCopied(slug)
         setTimeout(() => setCopied(null), 1500)
     }
 
