@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [1.7.0] — 2026-03-07
+
+**Commit**: `feat: frontend scaffold with React, Tailwind, and routing`
+
+### Added
+- Vite + React 19 project in `frontend/`
+- Tailwind CSS v4 with Vite plugin for zero-config styling
+- React Router with two routes: `/` (dashboard) and `/agency/:slug` (detail)
+- API client module wrapping all backend endpoints
+- USDS-branded header with logo, dark theme
+- Vite dev proxy to backend on port 5000
+- Placeholder Dashboard with live health status indicator
+
+### Technical Notes
+- Tailwind v4 uses `@import "tailwindcss"` instead of directives
+- Vite proxy avoids CORS issues during development
+- Dark theme (slate-900 background) for professional look
+
+---
+
 ## [1.6.0] — 2026-03-07
 
 **Commit**: `feat: background sync service with auto-refresh`
