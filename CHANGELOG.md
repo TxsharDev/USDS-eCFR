@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [2.2.0] — 2026-03-07
+
+**Commit**: `docs: add regulatory analysis findings`
+
+### Added
+- `findings.md` with full eCFR data exploration covering scale, readability, cross-references, transition patterns, jurisdictional overlap, and burden metrics
+- Data artifact analysis: identified and corrected eCFR version history bootstrap from 2016 that inflated transition surge numbers from +1,575% to the actual +85%
+
+### Technical Notes
+- All text-based metrics (word counts, readability, passive voice, cross-references, mandates) sourced from XML content, unaffected by version history artifact
+- Transition comparison limited to 2020 and 2024 periods against 2017+ baselines for clean data
+- Corrected quarterly distribution: Q1 ~28%, Q2 ~21%, Q3 ~23%, Q4 ~28% (roughly even, no strong Q4 gaming signal)
+
+---
+
 ## [2.1.0] — 2026-03-07
 
 **Commit**: `docs: README and screenshots`
