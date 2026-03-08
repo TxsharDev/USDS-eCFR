@@ -12,32 +12,17 @@ public class AppDbContext : DbContext
     public DbSet<Title> Titles => Set<Title>();
     public DbSet<SyncLog> SyncLogs => Set<SyncLog>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder m)
     {
-        modelBuilder.Entity<Agency>(e =>
-        {
-            e.HasKey(a => a.Slug);
-            e.Property(a => a.Slug).HasMaxLength(200);
-            e.Property(a => a.Name).IsRequired();
-        });
-
-        modelBuilder.Entity<Change>(e =>
+        m.Entity<Agency>(e => { e.HasKey(a => a.Slug); e.Property(a => a.Slug).HasMaxLength(200); e.Property(a => a.Name).IsRequired(); });
+        m.Entity<Change>(e =>
         {
             e.HasKey(c => c.Id);
             e.HasIndex(c => c.AgencySlug);
             e.HasIndex(c => c.ChangeDate);
-            e.HasIndex(c => new { c.AgencySlug, c.ChangeDate })
-                .HasDatabaseName("IX_Changes_Slug_Date");
+            e.HasIndex(c => new { c.AgencySlug, c.ChangeDate }).HasDatabaseName("IX_Changes_Slug_Date");
         });
-
-        modelBuilder.Entity<Title>(e =>
-        {
-            e.HasKey(t => t.Number);
-        });
-
-        modelBuilder.Entity<SyncLog>(e =>
-        {
-            e.HasKey(s => s.Id);
-        });
+        m.Entity<Title>(e => e.HasKey(t => t.Number));
+        m.Entity<SyncLog>(e => e.HasKey(s => s.Id));
     }
 }

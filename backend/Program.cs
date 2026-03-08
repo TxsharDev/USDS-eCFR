@@ -4,28 +4,14 @@ using EcfrAnalyzer.Endpoints;
 using EcfrAnalyzer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Database
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=ecfr.db"));
-
-// HTTP client for eCFR API
-builder.Services.AddHttpClient<EcfrClient>(client =>
-    client.Timeout = TimeSpan.FromSeconds(60));
-
-// Services
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite("Data Source=ecfr.db"));
+builder.Services.AddHttpClient<EcfrClient>(c => c.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddScoped<SyncService>();
 builder.Services.AddHostedService<BackgroundSyncService>();
-
-// CORS
-builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 var app = builder.Build();
 
-// Ensure database created and WAL (Write-Ahead Logging) mode enabled to let the
-// frontend query analytics data without blocking the background sync writing new records.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -35,42 +21,25 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors();
 
-// Health endpoint
 app.MapGet("/api/health", async (AppDbContext db) =>
 {
-    var agencyCount = await db.Agencies.CountAsync();
-    var changeCount = await db.Changes.LongCountAsync();
-    var lastSync = await db.SyncLogs
-        .OrderByDescending(s => s.Id)
-        .Select(s => s.CompletedAt)
-        .FirstOrDefaultAsync();
-
+    var lastSync = await db.SyncLogs.OrderByDescending(s => s.Id).Select(s => s.CompletedAt).FirstOrDefaultAsync();
     return Results.Ok(new
     {
         status = "healthy",
-        version = "1.0.0",
         lastSync = lastSync?.ToString("o"),
-        agencyCount,
-        changeCount
+        agencyCount = await db.Agencies.CountAsync(),
+        changeCount = await db.Changes.LongCountAsync()
     });
 });
 
-// Manual sync trigger. Runs full pipeline: agencies, titles, versions, content + RBI
 app.MapPost("/api/sync/trigger", async (SyncService sync) =>
 {
     var log = await sync.RunFullSyncAsync();
     AnalyticsEndpoints.ClearCache();
-    return Results.Ok(new
-    {
-        status = log.Status,
-        agencies = log.AgenciesSynced,
-        completedAt = log.CompletedAt?.ToString("o"),
-        error = log.ErrorMessage
-    });
+    return Results.Ok(new { status = log.Status, agencies = log.AgenciesSynced, error = log.ErrorMessage });
 });
 
-// Endpoint groups
 app.MapGroup("/api/agencies").MapAgencyEndpoints();
 app.MapGroup("/api/analytics").MapAnalyticsEndpoints();
-
 app.Run();

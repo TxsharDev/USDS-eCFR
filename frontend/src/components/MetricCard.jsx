@@ -1,4 +1,3 @@
-// Reusable stat card used across the dashboard for key numbers
 export default function MetricCard({ label, value, sub }) {
   return (
     <div className="bg-slate-800 rounded-lg p-5 border border-slate-700">

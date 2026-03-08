@@ -2,36 +2,22 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import AgencyDetail from './pages/AgencyDetail'
 
-// Layout with USDS header and route switching between dashboard and agency detail
 function App() {
-  const location = useLocation()
-  const isDetail = location.pathname.startsWith('/agency/')
-
+  const isDetail = useLocation().pathname.startsWith('/agency/')
   return (
     <div className="min-h-screen">
-      {/* USDS-branded header */}
       <header className="bg-slate-800 border-b border-slate-700 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 no-underline">
             <img src="/usds-logo.svg" alt="USDS" className="h-8 w-8" />
             <div>
-              <h1 className="text-lg font-bold text-white leading-tight">
-                eCFR Regulatory Analyzer
-              </h1>
-              <p className="text-xs text-slate-400">
-                U.S. Digital Service
-              </p>
+              <h1 className="text-lg font-bold text-white leading-tight">eCFR Regulatory Analyzer</h1>
+              <p className="text-xs text-slate-400">U.S. Digital Service</p>
             </div>
           </Link>
-          {isDetail && (
-            <Link to="/" className="text-sm text-blue-400 hover:text-blue-300">
-              Back to Dashboard
-            </Link>
-          )}
+          {isDetail && <Link to="/" className="text-sm text-blue-400 hover:text-blue-300">Back to Dashboard</Link>}
         </div>
       </header>
-
-      {/* Main content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Routes>
           <Route path="/" element={<Dashboard />} />

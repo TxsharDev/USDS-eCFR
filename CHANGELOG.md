@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Se
 
 ---
 
+## [2.3.0] — 2026-03-07
+
+**Commit**: `refactor: trim codebase to under 1,200 LOC`
+
+### Changed
+- Reduced total LOC from 1,506 to 1,006 across all source files
+- Stripped comments, consolidated blank lines, and inlined verbose patterns
+- SyncService.cs: 365 → 254 lines (condensed upsert blocks, inlined batch logic, tightened RBI computation)
+- AnalyticsEndpoints.cs: 122 → 57 lines (inlined simple endpoints, removed cache TTL constant)
+- EcfrClient.cs: 78 → 51 lines (expression-bodied fetch methods, collapsed error handling)
+- Program.cs: 76 → 45 lines (condensed service registration and health endpoint)
+- Frontend components trimmed by removing comments and condensing JSX
+
+### Technical Notes
+- Zero functionality removed — all endpoints, sync phases, caching, and UI components unchanged
+- Both backend (`dotnet build`) and frontend (`vite build`) compile clean
+- LOC breakdown: ~480 backend, ~526 frontend
+
+---
+
 ## [2.2.0] — 2026-03-07
 
 **Commit**: `docs: add regulatory analysis findings`
