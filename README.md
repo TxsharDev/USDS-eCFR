@@ -1,6 +1,6 @@
 # eCFR Regulatory Analyzer
 
-A web application that downloads, stores, and analyzes federal regulation data from the [eCFR public API](https://www.ecfr.gov/). Built for the U.S. Digital Service.
+A web application that downloads, stores, and analyzes federal regulation data from the [eCFR public API](https://www.ecfr.gov/).
 
 ## What It Does
 
