@@ -11,6 +11,16 @@ Provides a dashboard for analyzing federal regulations across ~150 agencies with
 3. **Checksum per Agency** - MD5 content hashes with one-click copy for integrity verification
 4. **Regulatory Burden Index (RBI)** - Custom metric combining word count, sentence complexity, and staleness into a single score per agency
 
+## Screenshots
+
+![Dashboard](Screenshots/1.png)
+
+| Change activity heatmap | Agency checksums |
+|---|---|
+| ![Heatmap](Screenshots/4.png) | ![Checksums](Screenshots/5.png) |
+
+![Agency detail](Screenshots/7.png)
+
 ## Tech Stack
 
 - **Backend**: ASP.NET Core 9 Minimal API, EF Core 9, SQLite
